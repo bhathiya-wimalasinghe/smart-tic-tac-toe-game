@@ -27,4 +27,31 @@ gameLevelButtons.each(function () {
         $("[data-menu-text]").text("Click Start to Continue...");
         globals.selectedLevel = btn.attr("id");
     });
+
+    startButton.click(function () {
+        if (typeof globals.selectedLevel !== "undefined") {
+            let aiplayer = new AIPlayer(globals.selectedLevel);
+            globals.game = new Game(aiplayer);
+            aiplayer.plays(globals.game);
+            globals.game.start();
+            menuElement.fadeOut();
+            boardElement.show();
+        }
+    });
+
+    squareElements.each(function () {
+        let square = $(this);
+        square.click(function () {
+            if (globals.game.status === "running" && globals.game.currentState.turn === X_TURN && !square.hasClass("clicked")) {
+                let index = parseInt(square.attr("data-square"));
+                let next = new State(globals.game.currentState);
+                next.board[index] = X_TURN;
+
+                globals.updateUI(index, X_TURN);
+                next.nextTurn();
+
+                globals.game.advanceTo(next);
+            }
+        });
+    });
 });
