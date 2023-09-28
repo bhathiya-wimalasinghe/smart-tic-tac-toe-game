@@ -71,3 +71,51 @@ class State {
         }
     }
 }
+
+
+class Game {
+    constructor(autoPlayer) {
+        this.ai = autoPlayer;
+        this.currentState = new State();
+        this.currentState.board = ["e", "e", "e",
+            "e", "e", "e",
+            "e", "e", "e"];
+        this.currentState.turn = X_TURN;
+        this.status = "beginning";
+    }
+
+    static score (_state) {
+        if (_state.result !== "still running") {
+            if (_state.result === "You Won!") {
+                return 10 - _state.oMovesCount;
+            } else if (_state.result === "You Lost!") {
+                return -10 + _state.oMovesCount;
+            } else {
+                return 0;
+            }
+        }
+    }
+
+    advanceTo (_state) {
+        this.currentState = _state;
+
+        if (_state.isGameOver()) {
+            this.status = "ended";
+            messageTextElement.text(this.currentState.result);
+            messageElement.show();
+        }
+
+        if (this.currentState.turn !== X_TURN) {
+            this.ai.notify(O_TURN);
+        }
+
+    }
+
+    start () {
+        if (this.status === "beginning") {
+            this.advanceTo(this.currentState);
+            this.status = "running";
+        }
+    }
+
+}
