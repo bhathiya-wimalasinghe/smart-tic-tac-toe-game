@@ -1,6 +1,8 @@
-const X_Turn = "x";
+const X_TURN = "x";
 const O_TURN = "o";
 const EMPTY_CELL = "e";
+
+var globals = {};
 
 const menuElement = $("#menu");
 const messageElement = $("#message");
