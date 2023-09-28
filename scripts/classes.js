@@ -119,3 +119,102 @@ class Game {
     }
 
 }
+
+class AIMove {
+    constructor(position) {
+        this.movePosition = position;
+        this.minimaxVal = 0;
+    }
+
+    applyTo (state) {
+        const next = new State(state);
+
+        next.board[this.movePosition] = state.turn;
+
+        if (state.turn === O_TURN) {
+            next.oMovesCount++;
+        }
+
+        next.nextTurn();
+
+        return next;
+    }
+}
+
+AIMove.ASCENDING = function (firstAction, secondAction) {
+    if (firstAction.minimaxVal < secondAction.minimaxVal) return -1;
+    else if (firstAction.minimaxVal > secondAction.minimaxVal) return 1;
+    else return 0;
+};
+
+
+class AIPlayer {
+    constructor(level) {
+        this.gameLevel = level;
+        this.game = {};
+    }
+
+    minimaxValue (state) {
+        if (state.isGameOver()) {
+            return Game.score(state);
+        } else {
+            var stateScore;
+
+            if (state.turn === X_TURN) stateScore = -1000;
+            else stateScore = 1000;
+
+            let availablePositions = state.findEmptyCells();
+
+            let availableNextStates = availablePositions.map(function (position) {
+                let action = new AIMove(position);
+
+                let nextState = action.applyTo(state);
+
+                return nextState;
+            });
+
+            availableNextStates.forEach((nextState) => {
+                var nextScore = this.minimaxValue(nextState);
+
+                if (state.turn === X_TURN) {
+                    if (nextScore > stateScore) stateScore = nextScore;
+                } else {
+                    if (nextScore < stateScore) stateScore = nextScore;
+                }
+            });
+
+            return stateScore;
+        }
+    }
+
+    playEasyMove (turn) {
+        // Need to implement the logic for a easy move
+    }
+
+    playMediumMove (turn) {
+        // Need to implement the logic for a medium move
+    }
+
+    playHardMove (turn) {
+    }
+
+    plays (_game) {
+        this.game = _game;
+    }
+
+    notify (turn) {
+        if (globals.game.status === "ended") return;
+        switch (this.gameLevel) {
+            case "btn-easy":
+                this.playEasyMove(turn);
+                break;
+            case "btn-medium":
+                this.playMediumMove(turn);
+                break;
+            case "btn-hard":
+                this.playHardMove(turn);
+                break;
+        }
+    }
+}
+
