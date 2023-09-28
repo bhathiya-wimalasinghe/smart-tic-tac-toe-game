@@ -54,4 +54,34 @@ gameLevelButtons.each(function () {
             }
         });
     });
+
+    restartButton.click(function () {
+        clearBoard();
+        startButton.click();
+        messageElement.fadeOut();
+    });
+
+    menuButton.click(function () {
+        clearBoard();
+        messageElement.fadeOut();
+        boardElement.hide();
+        menuElement.show();
+    });
+
+
+    globals.updateUI = function (index, turn) {
+        let targetSquare = $(`div[data-square="${index}"]`);
+        if (!targetSquare.hasClass('clicked')) {
+            targetSquare.addClass(turn);
+            targetSquare.addClass('clicked');
+        }
+    }
+
+    function clearBoard () {
+        squareElements.each(function () {
+            let square = $(this);
+            square.removeClass();
+            square.addClass("square");
+        })
+    }
 });
