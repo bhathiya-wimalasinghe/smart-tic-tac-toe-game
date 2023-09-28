@@ -1,0 +1,85 @@
+*{
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+}
+
+.board {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    grid-template-columns: repeat(3,auto);
+}
+
+.square {
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    border: 1px solid white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+.square.x::before,
+.square.x::after,
+.board.x .square:not(.x):not(.o):hover::after, 
+.board.x .square:not(.x):not(.o):hover::before
+{
+    content: "";
+    position: absolute;
+    width: calc(90px * .1);
+    height: 90px;
+    background-color: white;
+} 
+
+.board.x .square:not(.x):not(.o):hover::after, 
+.board.x .square:not(.x):not(.o):hover::before
+{
+    background-color: rgba(211, 211, 211, 0.74);
+}
+
+.square.x,
+.square.o {
+    cursor: not-allowed;
+}
+
+.square.x::before,
+.board.x .square:not(.x):not(.o):hover::before{
+    transform: rotate(45deg);
+}
+
+.square.x::after,
+.board.x .square:not(.x):not(.o):hover::after{
+    transform: rotate(-45deg);
+}
+
+.square.o::before,
+.square.o::after
+{
+    content: "";
+    border-radius: 50%;
+    position: absolute;
+} 
+
+.square.o::before
+{
+    width: 85px;
+    height: 85px;
+    background-color: white;
+}
+
+.square.o::after
+{
+    width: 70px;
+    height: 70px;
+    background-color: black;
+}
