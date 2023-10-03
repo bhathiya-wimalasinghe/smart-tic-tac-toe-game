@@ -190,6 +190,7 @@ class AIPlayer {
     playEasyMove (turn) {
         let available = this.game.currentState.findEmptyCells();
 
+        console.log(Math.floor(Math.random() * available.length));
         let move = new AIMove(available[Math.floor(Math.random() * available.length)]);
 
         let next = move.applyTo(this.game.currentState);
