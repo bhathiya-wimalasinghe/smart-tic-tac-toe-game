@@ -192,7 +192,6 @@ class AIPlayer {
 
         let move = new AIMove(available[Math.floor(Math.random() * available.length)]);
 
-        console.log(typeof move);
         let next = move.applyTo(this.game.currentState);
 
         globals.updateUI(move.movePosition, turn);
