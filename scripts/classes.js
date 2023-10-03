@@ -201,7 +201,25 @@ class AIPlayer {
     }
 
     playMediumMove (turn) {
-        // Need to implement the logic for a medium move
+        let available = this.game.currentState.findEmptyCells();
+
+        let possibleMoves = available.map((position) => {
+            let move = new AIMove(position);
+
+            let next = move.applyTo(globals.game.currentState);
+
+            move.minimaxVal = this.minimaxValue(next);
+
+            return move;
+        });
+
+        possibleMoves.sort(AIMove.ASCENDING);
+
+        let chosenAction = possibleMoves[Math.floor(Math.random() * (possibleMoves.length / 2))];
+        let next = chosenAction.applyTo(this.game.currentState);
+        globals.updateUI(chosenAction.movePosition, turn);
+
+        globals.game.advanceTo(next);
     }
 
     playHardMove (turn) {
